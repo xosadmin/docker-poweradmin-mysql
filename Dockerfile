@@ -2,11 +2,17 @@ FROM debian:stable-slim
 
 RUN apt update -y && \
     apt install -y \
-    php php-intl php-php-gettext php-tokenizer php-fpm php-mysql nginx git && \
-    rm -rf /var/lib/apt/lists/*
+    ca-certificates apt-transport-https software-properties-common wget curl lsb-release \
+    php php-intl php-pear php-gettext php-tokenizer php-mysql apache2 libapache2-mod-php git && \
+    pear install DB && pear install pear/MDB2#mysql && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY start.sh /etc/start.sh
+WORKDIR /var/www/html
 
-RUN chmod +x /etc/start.sh
+RUN git clone https://github.com/poweradmin/poweradmin.git . && \
+    git checkout master && \
+    rm -rf .git
 
-ENTRYPOINT ["/etc/start.sh"]
+EXPOSE 80
+
+CMD ["apachectl", "-D", "FOREGROUND"]
