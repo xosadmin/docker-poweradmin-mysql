@@ -9,6 +9,8 @@ RUN apt update -y && \
 
 WORKDIR /var/www/html
 
+RUN rm -rf /var/www/html/*
+
 RUN git clone https://github.com/poweradmin/poweradmin.git . && \
     git checkout master && \
     rm -rf .git
