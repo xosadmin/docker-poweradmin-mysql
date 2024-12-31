@@ -15,6 +15,9 @@ RUN git clone https://github.com/poweradmin/poweradmin.git . && \
     git checkout master && \
     rm -rf .git
 
+RUN echo "ServerTokens Prod" >> /etc/apache2/apache2.conf && \
+    echo "ServerSignature Off" >> /etc/apache2/apache2.conf
+
 EXPOSE 80
 
 CMD ["apachectl", "-D", "FOREGROUND"]
